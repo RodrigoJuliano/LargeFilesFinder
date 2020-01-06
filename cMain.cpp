@@ -112,7 +112,9 @@ void cMain::onButtonExcludeClicked(wxCommandEvent& ev) {
 	// if the user confirm
 	if (d->ShowModal() == wxID_OK) {
 		std::vector<int> deleted;
-		for (int i = 0; i < m_listctrl->GetItemCount(); i++)
+		// start by the last because removing one item from the
+		// list the itens are moved
+		for (int i = m_listctrl->GetItemCount()-1; i >= 0; i--)
 			// verify if the file is selected
 			if (m_listctrl->IsItemChecked(i)) {
 				// delete the file from disk and itens
