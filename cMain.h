@@ -2,6 +2,7 @@
 #include <wx/wx.h>
 #include <wx/frame.h>
 #include <wx/spinctrl.h>
+#include <wx/listctrl.h>
 #include "Item.h"
 
 class cMain : public wxFrame
@@ -21,10 +22,9 @@ private:
 	wxDirDialog* m_fd = nullptr;
 	wxSpinCtrl* m_spinsizefilter = nullptr;
 	wxButton* m_buttoncheck = nullptr;
-	wxScrolledWindow* m_listfiles = nullptr;
-	wxBoxSizer* m_listsizer = nullptr;
 	wxButton* m_buttonexclude = nullptr;
-	wxStaticBoxSizer* m_bxlist = nullptr;
+	wxStaticBoxSizer* m_listborder = nullptr;
+	wxListCtrl* m_listctrl = nullptr;
 	std::vector<Item*> itens;
 
 	void onButtonPickerClicked(wxCommandEvent& ev);
