@@ -23,12 +23,14 @@ private:
 	wxSpinCtrl* m_spinsizefilter = nullptr;
 	wxButton* m_buttoncheck = nullptr;
 	wxButton* m_buttonexclude = nullptr;
-	wxStaticBoxSizer* m_listborder = nullptr;
+	wxStaticText* m_listtitle = nullptr;
 	wxListCtrl* m_listctrl = nullptr;
 	std::vector<Item*> itens;
+	bool allmarked = false;
 
 	void onButtonPickerClicked(wxCommandEvent& ev);
 	void onButtonCheckClicked(wxCommandEvent& ev);
 	void onButtonExcludeClicked(wxCommandEvent& ev);
+	void onListColClicked(wxListEvent& ev);
 };
 

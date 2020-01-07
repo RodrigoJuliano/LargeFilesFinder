@@ -16,13 +16,13 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Big files finder")
 	m_mainsizer = new wxBoxSizer(wxVERTICAL);
 	m_filtersizer = new wxBoxSizer(wxHORIZONTAL);
 	m_buttonexclude = new wxButton(this, wxID_ANY, "Delete marked");
-	m_listborder = new wxStaticBoxSizer(wxVERTICAL, this, "Files found");
+	m_listtitle = new wxStaticText(this, wxID_ANY, "Files found");
 	m_listctrl = new wxListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_HRULES);
 	m_listctrl->EnableCheckBoxes();
-	// First column is empty (for the checkbox)
-	long c0 = m_listctrl->AppendColumn("", wxLIST_FORMAT_LEFT, 23);
-	long c1 = m_listctrl->AppendColumn("File", wxLIST_FORMAT_LEFT, 200);
-	long c2 = m_listctrl->AppendColumn("Size", wxLIST_FORMAT_LEFT, 50);
+	// First column for the checkboxs
+	long c0 = m_listctrl->AppendColumn("All", wxLIST_FORMAT_LEFT, 28);
+	long c1 = m_listctrl->AppendColumn("File", wxLIST_FORMAT_LEFT, 263);
+	long c2 = m_listctrl->AppendColumn("Size", wxLIST_FORMAT_LEFT, 70);
 	
 	// set the sizers
 	m_pickersizer->Add(m_texta1, 1);
@@ -33,8 +33,8 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Big files finder")
 	m_mainsizer->Add(m_selectf, 0, wxALL | wxALIGN_CENTER_HORIZONTAL,10);
 	m_mainsizer->Add(m_pickersizer, 0, wxGROW | wxLEFT | wxRIGHT, 10);
 	m_mainsizer->Add(m_filtersizer, 0, wxGROW | wxLEFT | wxRIGHT, 10);
-	m_listborder->Add(m_listctrl, 1, wxGROW);
-	m_mainsizer->Add(m_listborder, 1, wxALL | wxGROW, 10);
+	m_mainsizer->Add(m_listtitle, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 10);
+	m_mainsizer->Add(m_listctrl, 1, wxGROW | wxLEFT | wxRIGHT, 10);
 	m_mainsizer->Add(m_buttonexclude, 0, wxALL | wxALIGN_CENTER_HORIZONTAL, 10);
 
 	SetSizer(m_mainsizer);
@@ -43,6 +43,7 @@ cMain::cMain() : wxFrame(nullptr, wxID_ANY, "Big files finder")
 	m_buttonpicker->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::onButtonPickerClicked, this);
 	m_buttoncheck->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::onButtonCheckClicked, this);
 	m_buttonexclude->Bind(wxEVT_COMMAND_BUTTON_CLICKED, &cMain::onButtonExcludeClicked, this);
+	m_listctrl->Bind(wxEVT_LIST_COL_CLICK, &cMain::onListColClicked, this);
 }
 
 cMain::~cMain()
@@ -124,5 +125,14 @@ void cMain::onButtonExcludeClicked(wxCommandEvent& ev) {
 				itens[pos] = nullptr;
 				m_listctrl->DeleteItem(i);
 			}
+	}
+}
+
+void cMain::onListColClicked(wxListEvent& ev)
+{
+	if (ev.m_col == 0) {
+		allmarked = !allmarked;
+		for (long i = m_listctrl->GetItemCount() - 1; i >= 0; i--)
+			m_listctrl->CheckItem(i, allmarked);
 	}
 }
