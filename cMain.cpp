@@ -111,7 +111,6 @@ void cMain::onButtonExcludeClicked(wxCommandEvent& ev) {
 		"Delete the selected files?", wxMessageBoxCaptionStr, wxOK | wxCANCEL);
 	// if the user confirm
 	if (d->ShowModal() == wxID_OK) {
-		std::vector<int> deleted;
 		// start by the last because removing one item from the
 		// list the itens are moved
 		for (int i = m_listctrl->GetItemCount()-1; i >= 0; i--)
@@ -120,13 +119,10 @@ void cMain::onButtonExcludeClicked(wxCommandEvent& ev) {
 				// delete the file from disk and itens
 				// and save the position on the list
 				size_t pos = static_cast<size_t>(m_listctrl->GetItemData(i));
-				deleted.push_back(i);
 				std::filesystem::remove(itens[pos]->pathfile);
 				delete itens[pos];
 				itens[pos] = nullptr;
+				m_listctrl->DeleteItem(i);
 			}
-		// remove the deleted files from de list
-		for (int i : deleted)
-			m_listctrl->DeleteItem(i);
 	}
 }
